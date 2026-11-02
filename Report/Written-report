@@ -1,1 +1,17 @@
-fgoic
+Chapter 1
+
+1.1 Introduction
+
+This project focuses on the design and development of a Tic-Tac-Toe game using the Java programming language.
+The application is intended to provide users with an interactive and user-friendly gaming experience through a graphical user interface(GUI).
+The game will allow users to play against another person or compete against a computer-controlled opponent.
+
+The project aims to develop practical programming skills through the application of Java programming concepts.
+These include constuctors, access modifiers, control statements, graphical user interfaces and object-oriented programming principles.
+
+The application will also include additional features such as score tracking, different AI difficulty levels, larger grid options and customisable game tokens.
+Through this project, the group aims to demonstrate the software development process, from planning and design to implementation and testing.
+
+1.2 Backround of the project
+
+
