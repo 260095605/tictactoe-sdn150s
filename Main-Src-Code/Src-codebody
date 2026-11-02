@@ -1,1 +1,38 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Random;T
+
+public class TicTacToe {
+
+private JPanel panel1;
+private JRadioButton twoPlayerRadio;
+private JRadioButton VsComputer;
+private JLabel statusLabel;
+private JLabel button1;
+private JLabel button2;
+private JLabel button3;
+private JLabel button4;
+private JLabel button5;
+private JLabel button6;
+private JLabel button7;
+private JLabel button8;
+private JLabel button9;
+private JComboBox difficultycomboBox1;
+private JLabel scoreLabel;
+private JButton newGameButton1;
+private JButton resetScoreButton1;
+
+}
+// SCORE VARIABLES
+
+private JButton[] buttons = new JButton[9];
+private String[] board = new String[9];
+private String currentPlayer = "X";
+private boolean gameActive = true;
+
+private int ScoreX = 0;
+private int scoreO = 0;
+private int scoreTies;
 
