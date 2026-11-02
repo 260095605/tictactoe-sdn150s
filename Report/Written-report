@@ -47,9 +47,18 @@ Implement two player mode and player versus computer mode with different difficu
 Provide options for larger game grids.
 Implement a scoring system to keep track of players' wins and losses.
 Apply Java programming concepts, including constructors, access modifiers and control statements.
-Test the application to ensure that it fuctions correctly and meets the project requirements.
+Test the application to ensure that it functions correctly and meets the project requirements.
 
 1.5 Scope of the project
+
+The project covers the design and implementation of a desktop-based Tic-Tac-Toe application using Netbeans and IntelliJ IDEA development environment.
+The application will use a graphical user interface to allow users to access the different game features.
+
+The system will support two-player gameplay and a single-player mode against an AI opponent. 
+It will also include larger grid options, customisable game tokens and a scoring system to keep track of players' wins and losses.
+
+The project will focus on the functionality, usability and reliability of the application.
+It will cover the planning, design, implementation and testing stages of software development.
 
 
 
