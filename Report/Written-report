@@ -14,4 +14,42 @@ Through this project, the group aims to demonstrate the software development pro
 
 1.2 Backround of the project
 
+Tic-Tac-Toe is a traditional two player strategy game played on a grid, where players take turns placing their respective symbols, X and O.
+The objective is to form a straight line of three matching symbols horizontally, vertically or diagonally before the opponent does.
+
+With the development of computer technology, traditional games can be transformed into digital applications that provide interactive experiences.
+Developing a Tic-Tac-Toe game using Java provides an opportunity to apply programming concepts while creating a practical application.
+
+The proposed application will extend the traditional game by introducing a graphical interface, a computer-controlled opponent, score tracking and customisation options.
+These features are intended to make the game more engaging and provide users with different ways to play.
+
+1.3 Project Rationale
+
+The development of this Tic-Tac-Toe application is motivated by the need to make the traditional game more accessible and interactive.
+Traditional Tic-Tac-Toe requires two people to participate, which can limit individuals who want to play when another player is unavailable.
+Basic versions of the game may lack additional features such as different difficulty levels, score tracking and customisation options.
+
+This project therefore aims to enhance the traditional gaming experience by developing a Java based application that allows users to play against another person or a computer- controlled opponent.
+Additional features will provide users with more playing options and create a more engaging gaming experience.
+
+1.4 Aim and Objectives
+
+1.4.1 Aim 
+
+The aim of this project is to design and develop a functional, user-friendly Tic-Tac-Toe game using Java, incorporating both multiplayer and AI features.
+
+1.4.2 Objectives
+
+The objectives of the project are to:
+
+Develop a user-friendly graphical interface for the Tic-Tac-Toe game.
+Implement two player mode and player versus computer mode with different difficulty levels
+Provide options for larger game grids.
+Implement a scoring system to keep track of players' wins and losses.
+Apply Java programming concepts, including constructors, access modifiers and control statements.
+Test the application to ensure that it fuctions correctly and meets the project requirements.
+
+1.5 Scope of the project
+
+
 
