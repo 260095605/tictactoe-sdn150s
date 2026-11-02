@@ -36,3 +36,26 @@ private int ScoreX = 0;
 private int scoreO = 0;
 private int scoreTies;
 
+//Winning Lines
+private int[][] winningLines = {
+{0, 1, 2},{3, 4, 5},{6, 7, 8},  // 3 horizontal wins
+{0, 3, 6},{1, 4, 7},{2, 5, 8},  // 3 vertical wins
+{0, 4, 8},{2, 4, 6}  //2 diagonal wins
+};
+//Constructor
+public TicTacToe(){
+
+difficultyComboBox1.addItem("Easy");
+difficultycomboBox1.addItem("Medium");
+difficultycomboBox1.addItem("Hard");
+
+// A buttongroup makes radiobutton work together: When one is selected the other is deselected//
+
+ButtonGroup modeGroup = new ButtonGroup();
+modeGroup.add(twoPlayerRadio);
+modeGroup.add(VsComputer);
+twoPlayerRadio.setSelected(true);
+difficultycomboBox1.setEnabled(false);
+
+}
+
