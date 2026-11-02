@@ -1,1 +1,1 @@
-Test table and screenshots go here.
+Updated test table and screenshots folder.
