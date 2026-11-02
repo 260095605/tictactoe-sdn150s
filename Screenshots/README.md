@@ -1,1 +1,0 @@
-Test screenshots go here.
