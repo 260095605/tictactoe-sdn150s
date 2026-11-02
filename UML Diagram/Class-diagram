@@ -1,4 +1,20 @@
-Class Diagram
-JPanel
-sbonga
-perfevlmn
+ClassDiagram
+class TicTacToe {
+JPanel panel1
+JRadioButton twoPlayerRadio
+JRadioButton VaComputer
+JLabel statusLabel
+JLabel resultsLabel
+JButton button1
+JButton button2
+JButton button3
+JButton button4
+JButton button5
+JButton button6
+JButton button7
+JButton button8
+JButton button9
+JComboBox diffficultycomboBox1
+JLabel scoreLabel1
+JButton newGameButton1
+JButton resetScoreButton1
