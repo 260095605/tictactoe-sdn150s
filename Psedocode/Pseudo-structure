@@ -1,1 +1,17 @@
+                          ALGORITHM:TIC-TAC-TOE
+BEGIN
+Start up and Splash Screen
+Load splash image from directory
+Display splash window for 2 seconds
+Disp
+Create an empty 3 x 3 game board
+Set Player X wins to zero
+Set Player O wins to zero
+Set Draws to zero
 
+Display the game window
+Display the game board
+Display the game mode selection
+Display the scaoreboard 
+
+Ask user
