@@ -9,7 +9,7 @@ The game will allow users to play against another person or compete against a co
 The project aims to develop practical programming skills through the application of Java programming concepts.
 These include constuctors, access modifiers, control statements, graphical user interfaces and object-oriented programming principles.
 
-The application will also include additional features such as score tracking, different AI difficulty levels, larger grid options and customisable game tokens.
+The application will also include additional features such as score tracking and different AI difficulty level.
 Through this project, the group aims to demonstrate the software development process, from planning and design to implementation and testing.
 
 1.2 Backround of the project
@@ -20,14 +20,14 @@ The objective is to form a straight line of three matching symbols horizontally,
 With the development of computer technology, traditional games can be transformed into digital applications that provide interactive experiences.
 Developing a Tic-Tac-Toe game using Java provides an opportunity to apply programming concepts while creating a practical application.
 
-The proposed application will extend the traditional game by introducing a graphical interface, a computer-controlled opponent, score tracking and customisation options.
+The proposed application will extend the traditional game by introducing a graphical interface, a computer-controlled opponent and score tracking.
 These features are intended to make the game more engaging and provide users with different ways to play.
 
 1.3 Project Rationale
 
 The development of this Tic-Tac-Toe application is motivated by the need to make the traditional game more accessible and interactive.
 Traditional Tic-Tac-Toe requires two people to participate, which can limit individuals who want to play when another player is unavailable.
-Basic versions of the game may lack additional features such as different difficulty levels, score tracking and customisation options.
+Basic versions of the game may lack additional features such as different difficulty levels, score tracking.
 
 This project therefore aims to enhance the traditional gaming experience by developing a Java based application that allows users to play against another person or a computer- controlled opponent.
 Additional features will provide users with more playing options and create a more engaging gaming experience.
@@ -44,7 +44,6 @@ The objectives of the project are to:
 
 Develop a user-friendly graphical interface for the Tic-Tac-Toe game.
 Implement two player mode and player versus computer mode with different difficulty levels
-Provide options for larger game grids.
 Implement a scoring system to keep track of players' wins and losses.
 Apply Java programming concepts, including constructors, access modifiers and control statements.
 Test the application to ensure that it functions correctly and meets the project requirements.
@@ -55,7 +54,7 @@ The project covers the design and implementation of a desktop-based Tic-Tac-Toe 
 The application will use a graphical user interface to allow users to access the different game features.
 
 The system will support two-player gameplay and a single-player mode against an AI opponent. 
-It will also include larger grid options, customisable game tokens and a scoring system to keep track of players' wins and losses.
+It will also include a scoring system to keep track of players' wins and losses.
 
 The project will focus on the functionality, usability and reliability of the application.
 It will cover the planning, design, implementation and testing stages of software development.
@@ -85,4 +84,33 @@ Which Java programming concepts, software design methods and development tools w
 Chapter 3
 
 3. Discussions
+
+3.1 Introduction
+
+This chapter discusses how the Tic-Tac-Toe game will be designed and developed using Java.
+It explains the design approach, the tools that will be used and how the different features of the game are expected to work.
+It also discusses the programming concepts that will be applied during development.
+
+3.2 Design Approach
+
+The project uses an object-oriented programming approach.
+This means that the program is divided into classes, where each class is responsible for a specific part of the game.
+This helps to make the program easier to understand, organise and maintain.
+
+The game is designed as a desktop application with a simple interface that allows users to play without difficulty.
+The customary 3*3 Tic-Tac-Toe board is used, with X and O representing the two players.
+
+3.3 Graphical User Interface
+
+The graphical user interface (GUI) uses Java Swing to make the game simple and easy to use.
+The application displays a customary 3*3 Tic-Tac-Toe board where players place their symbols, X and O.
+It provides two game modes: Two-Player Mode and AI Mode.
+In AI mode, users can also select the computer's difficulty level.
+
+The interface includes a csoreboard that tracks the scores of X, O and ties. 
+It also displays the game status and provides a New Game button and a Reset Score button to help users manage their games.
+
+3.4 Game Modes
+
+
 
