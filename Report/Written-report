@@ -60,5 +60,29 @@ It will also include larger grid options, customisable game tokens and a scoring
 The project will focus on the functionality, usability and reliability of the application.
 It will cover the planning, design, implementation and testing stages of software development.
 
+Chapter 2
 
+2. Sub-questions
+
+This chapter presents the key questions that will guide the design and development of the Java-based Tic-Tac-Toe game.
+These questions focus on the application's features, functionality, design and implementation.
+
+2.1 Graphical User Interface
+How will the graphical user interface (GUI) be designed to provide users with a simple, interactive and user-friendly gaming experience?
+
+2.2 Game Modes
+How will the application support both two-player mode and player versus computer mode?
+
+2.3 Artificial Intelligence
+How will AI be implemented to provide different difficulty levels for the computer opponent?
+
+2.4 Game Logic and Score Tracking
+How will the application manage game logic, including detecting winning combinations, identifying draws and keeping track of players' wins and losses?
+
+2.5 Programming Concepts and Development Tools
+Which Java programming concepts, software design methods and development tools will be used to design and implement the application?
+
+Chapter 3
+
+3. Discussions
 
