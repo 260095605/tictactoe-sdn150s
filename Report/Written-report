@@ -107,7 +107,7 @@ The application displays a customary 3*3 Tic-Tac-Toe board where players place t
 It provides two game modes: Two-Player Mode and AI Mode.
 In AI mode, users can also select the computer's difficulty level.
 
-The interface includes a csoreboard that tracks the scores of X, O and ties. 
+The interface includes a scoreboard that tracks the scores of X, O and ties. 
 It also displays the game status and provides a New Game button and a Reset Score button to help users manage their games.
 
 3.4 Game Modes
@@ -140,7 +140,7 @@ It will manage player turns, check whether a selected position is empty and prev
 After each move, the application will check whether a player has won.
 
 A player will win by placing three matching tokens in a horizontal, vertical or diagonal line.
-If all nine postions are occupied and neither player has won, the game will be declared a draw.
+If all nine positions are occupied and neither player has won, the game will be declared a draw.
 The application will also include a scoring system to keep track of the players' results.
 This will allow users to see how many games have been won or lost.
 
@@ -152,9 +152,14 @@ Java Swing is used to create the graphical user interface.
 The project applies object-oriented programming concepts such as classes, objects, constructors and access modifiers. 
 These concepts help to organise the program and control how different parts of the application work together.
 
-Control statements, loops and conditional statements are aslo used.
+Control statements, loops and conditional statements are also used.
 For example, conditional statements assist in checking winning combinations, while loops are useful when checking the position on the game board.
 
 3.8 Testing and Evaluation
 
+Testing was carried out during the development of the application to check whether the different features work correctly.
+The group tested both game modes, the AI difficulty levels, player turns, winning combinations, draw conditions and the scoring system.
 
+The graphical user interface was also tested to make sure that the buttons and other components respond correctly when users interact with them.
+Any errors identified during the test were corrected.
+The main aim of testing was to make sure that the game works as expected and is easy for users to play.
