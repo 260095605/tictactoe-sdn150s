@@ -112,5 +112,49 @@ It also displays the game status and provides a New Game button and a Reset Scor
 
 3.4 Game Modes
 
+The application will support two game modes.
+
+Two-player modes
+In this mode, two players will play against each other using the same computer.
+The first player will use X while the second player will use O.
+Players will take turns selecting empty spaces on the board until one player wins or the game ends in a draw.
+
+Player-versus-computer mode
+
+In this mode, one player will play against a computer-controlled opponent.
+The human player will use one token, while the computer will use the other.
+After the human player makes a move, the computer will automatically select an available position on the board.
+
+3.5 Artificial Intelligence
+
+The game will include an artificial intelligence (AI) opponent to allow users to play when another human player is unavailable.
+The AI will have different difficulty levels to provide players with different challenges.
+
+The easier difficulty level will allow the computer to make simpler moves, while the harder difficulty level will make use of better decision-making strategies to increase the challenge for the human player.
+This feature will make the game more interesting because users will be able to choose how challenging they want their opponent to be.
+
+3.6 Game Logic and Score Tracking
+
+Game logic refers to the rules and instructions that control how the game works.
+It will manage player turns, check whether a selected position is empty and prevent players from placing their tokens in positions that are already occupied.
+After each move, the application will check whether a player has won.
+
+A player will win by placing three matching tokens in a horizontal, vertical or diagonal line.
+If all nine postions are occupied and neither player has won, the game will be declared a draw.
+The application will also include a scoring system to keep track of the players' results.
+This will allow users to see how many games have been won or lost.
+
+3.7 Development Tools and Programming Concepts
+
+The project is developed using Java as the programming language and IntelliJ IDEA as the development environment.
+Java Swing is used to create the graphical user interface.
+
+The project applies object-oriented programming concepts such as classes, objects, constructors and access modifiers. 
+These concepts help to organise the program and control how different parts of the application work together.
+
+Control statements, loops and conditional statements are aslo used.
+For example, conditional statements assist in checking winning combinations, while loops are useful when checking the position on the game board.
+
+3.8 Testing and Evaluation
 
 
