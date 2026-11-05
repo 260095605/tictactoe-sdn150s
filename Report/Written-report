@@ -197,7 +197,7 @@ Based on the testing results, the application meets the main requirements of the
 All the implemented features work correctly, and users can play in both game modes without difficulties.
 
 The graphical interface makes the game easy to understand and interact with.
-The AI difficulty levels provide different challenges, while the scorebaord allows users to keep track of their perfomance.
+The AI difficulty levels provide different challenges, while the scoreboard allows users to keep track of their performance.
 
 Overall, the results show that Java and Java Swing provide the necessary tools to develop a functional desktop-based Tic-Tac-Toe game.
 
