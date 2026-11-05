@@ -1,20 +1,22 @@
 ClassDiagram
 class TicTacToe {
-JPanel panel1
-JRadioButton twoPlayerRadio
-JRadioButton VaComputer
++JPanel panel1
+CardLayout cardLayout
+JPanel mainMenuPanel
+JPanel tokenSelectanel
+JPanel difficultySelectPanel
+JPanel gamePanel
+JButton[][] boardButtons
+String[][] boardState
 JLabel statusLabel
-JLabel resultsLabel
-JButton button1
-JButton button2
-JButton button3
-JButton button4
-JButton button5
-JButton button6
-JButton button7
-JButton button8
-JButton button9
-JComboBox diffficultycomboBox1
-JLabel scoreLabel1
-JButton newGameButton1
-JButton resetScoreButton1
+JLabel scoreLabel
+int xWins 
+int oWins
+int draws
+boolean isXTurn
+boolean gameActive
+boolean vsAiMode
+int aiDifficulty
+Image rawXImage
+Image rawOImage
++TicTacToe()
