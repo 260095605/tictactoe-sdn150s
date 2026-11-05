@@ -202,3 +202,9 @@ The AI difficulty levels provide different challenges, while the scoreboard allo
 Overall, the results show that Java and Java Swing provide the necessary tools to develop a functional desktop-based Tic-Tac-Toe game.
 
 Chapter 5: Conclusion
+In conclusion,Simple games can be excellent projects for learning programming concepts. Your team have been tasked
+with designing a Java program for a Tic-Tac-Toe game. The game should feature a graphical user interface,
+support both two-player and AI opponent modes, and keep track of wins and losses. Consider
+implementing multiple difficulty levels for the AI, a larger grid size option, and the ability to customize
+game tokens.
+
