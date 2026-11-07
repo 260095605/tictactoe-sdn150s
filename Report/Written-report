@@ -7,12 +7,12 @@ The application is intended to provide users with an interactive and user-friend
 The game will allow users to play against another person or compete against a computer-controlled opponent.
 
 The project aims to develop practical programming skills through the application of Java programming concepts.
-These include constuctors, access modifiers, control statements, graphical user interfaces and object-oriented programming principles.
+These include constructors, access modifiers, control statements, graphical user interfaces and object-oriented programming principles.
 
 The application will also include additional features such as score tracking and different AI difficulty level.
 Through this project, the group aims to demonstrate the software development process, from planning and design to implementation and testing.
 
-1.2 Backround of the project
+1.2 Background of the project
 
 Tic-Tac-Toe is a traditional two player strategy game played on a grid, where players take turns placing their respective symbols, X and O.
 The objective is to form a straight line of three matching symbols horizontally, vertically or diagonally before the opponent does.
@@ -202,9 +202,10 @@ The AI difficulty levels provide different challenges, while the scoreboard allo
 Overall, the results show that Java and Java Swing provide the necessary tools to develop a functional desktop-based Tic-Tac-Toe game.
 
 Chapter 5: Conclusion
-In conclusion,Simple games can be excellent projects for learning programming concepts. Your team have been tasked
-with designing a Java program for a Tic-Tac-Toe game. The game should feature a graphical user interface,
-support both two-player and AI opponent modes, and keep track of wins and losses. Consider
-implementing multiple difficulty levels for the AI, a larger grid size option, and the ability to customize
-game tokens.
+
+In conclusion,Simple games can be excellent projects for learning programming concepts.
+The project successfully achieves its aim of developing a functional Tic-Tac-Toe game using Java Swing. 
+The application provides two game modes, different AI difficulty levels and a scoreboard to track game results. 
+Testing confirms that all implemented features work as expected. 
+Through this project, the group applies Java programming concepts and gains practical experience in software design, development and testing.
 
