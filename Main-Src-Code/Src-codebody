@@ -1,144 +1,623 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Random;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class TicTacToe {
+    public JPanel panel1;
+    private CardLayout cardLayout;
+    private JPanel mainMenuPanel;
+    private JPanel tokenSelectPanel;
+    private JPanel difficultySelectPanel;
+    private JPanel gamePanel;
 
-private JPanel panel1;
-private JRadioButton twoPlayerRadio;
-private JRadioButton VsComputer;
-private JLabel statusLabel;
-private JLabel button1;
-private JLabel button2;
-private JLabel button3;
-private JLabel button4;
-private JLabel button5;
-private JLabel button6;
-private JLabel button7;
-private JLabel button8;
-private JLabel button9;
-private JComboBox difficultycomboBox1;
-private JLabel scoreLabel;
-private JButton newGameButton1;
-private JButton resetScoreButton1;
+    private JButton[][] boardButtons = new JButton[3][3];
+    private String[][] boardState = new String[3][3];
+    private JLabel statusLabel;
+    private JLabel scoreLabel;
 
-}
-// SCORE VARIABLES
+    private int xWins = 0;
+    private int oWins = 0;
+    private int draws = 0;
+    private boolean isXTurn = true;
+    private boolean gameActive = true;
+    private boolean vsAiMode = false;
+    private int aiDifficulty = 2;
 
-private JButton[] buttons = new JButton[9];
-private String[] board = new String[9];
-private String currentPlayer = "X";
-private boolean gameActive = true;
+    private Image rawXImage;
+    private Image rawOImage;
 
-private int ScoreX = 0;
-private int scoreO = 0;
-private int scoreTies;
+    private static Image loadImageSafe(String fileName) {
+        String[] paths = {
+            fileName,
+            "C:\\TicTacToe\\" + fileName,
+            "C:\\Java Project Files\\" + fileName,
+            System.getProperty("user.dir") + File.separator + fileName
+        };
 
-//Winning Lines
-private int[][] winningLines = {
-{0, 1, 2},{3, 4, 5},{6, 7, 8},  // 3 horizontal wins
-{0, 3, 6},{1, 4, 7},{2, 5, 8},  // 3 vertical wins
-{0, 4, 8},{2, 4, 6}  //2 diagonal wins
-};
-//Constructor
-public TicTacToe(){
+        for (String p : paths) {
+            File f = new File(p);
+            if (f.exists()) {
+                return new ImageIcon(f.getAbsolutePath()).getImage();
+            }
+        }
+        
+        try {
+            java.net.URL url = TicTacToe.class.getResource("/" + fileName);
+            if (url != null) {
+                return new ImageIcon(url).getImage();
+            }
+        } catch (Exception e) {}
 
-difficultyComboBox1.addItem("Easy");
-difficultycomboBox1.addItem("Medium");
-difficultycomboBox1.addItem("Hard");
+        return null;
+    }
 
-// A buttongroup makes radiobutton work together: When one is selected the other is deselected//
+    public TicTacToe() {
+        try {
+            Image xImg = loadImageSafe("x_icon.jpg");
+            Image oImg = loadImageSafe("o_icon.jpg");
+            if (xImg != null) rawXImage = removeBackground(xImg);
+            if (oImg != null) rawOImage = removeBackground(oImg);
+        } catch (Exception e) {}
 
-ButtonGroup modeGroup = new ButtonGroup();
-modeGroup.add(twoPlayerRadio);
-modeGroup.add(VsComputer);
-twoPlayerRadio.setSelected(true);
-difficultycomboBox1.setEnabled(false);
+        cardLayout = new CardLayout();
+        panel1 = new JPanel(cardLayout);
 
-}
-// Puting the 9 buttons ina an array(index 0 =top left,index 8=bottom right)
-buttons[0] = button1;
-buttons[1] = button2;
-buttons[2] = button3;
-buttons[3] = button4;
-buttons[4] = button5;
-buttons[5] = button6;
-buttons[6] = button7;
-buttons[7] = button8;
-buttons[8] = button9;
-
-        // Each board button calls cellClicked with its position in the buttons array
-        //When an array is clicked the actionperfomed runs
- ActionListener cellListener = new ActionListener() {
+        mainMenuPanel = new JPanel(null) {
+            private Image bg = loadImageSafe("main_menu.jpg");
             @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < 9; i++) {
-                    if (e.getSource() == buttons[i]) { // this here tells us which button was clicked
-                        cellClicked(i);
-                    }
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (bg != null) g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+                else {
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(0, 0, getWidth(), getHeight());
                 }
             }
         };
- for (int i = 0; i < 9; i++) { //Attach the shares listner to each of the 9 buttons
-            buttons[i].addActionListener(cellListener);
-        }
 
-        // Two-Player Mode selected
-        twoPlayerRadio.addActionListener(new ActionListener() {
+        JButton twoPlayerBtn = new JButton();
+        styleButton(twoPlayerBtn);
+        twoPlayerBtn.addActionListener(e -> {
+            vsAiMode = false;
+            cardLayout.show(panel1, "TOKEN_SELECT");
+        });
+
+        JButton aiBtn = new JButton();
+        styleButton(aiBtn);
+        aiBtn.addActionListener(e -> {
+            vsAiMode = true;
+            cardLayout.show(panel1, "DIFFICULTY_SELECT");
+        });
+
+        mainMenuPanel.add(twoPlayerBtn);
+        mainMenuPanel.add(aiBtn);
+        mainMenuPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                difficultycomboBox1.setEnabled(false); // no computer so the dificulty box will be grey
-                initializeGame();//start a frash board for the new mode
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                int w = mainMenuPanel.getWidth();
+                int h = mainMenuPanel.getHeight();
+                twoPlayerBtn.setBounds((int)(w * 0.15), (int)(h * 0.71), (int)(w * 0.33), (int)(h * 0.14));
+                aiBtn.setBounds((int)(w * 0.52), (int)(h * 0.71), (int)(w * 0.33), (int)(h * 0.14));
             }
         });
 
-        // AI Mode selected
-        VsComputer.addActionListener(new ActionListener() {
+        tokenSelectPanel = new JPanel(null) {
+            private Image bg = loadImageSafe("token_select.jpg");
             @Override
-            public void actionPerformed(ActionEvent e) {
-                difficultycomboBox1.setEnabled(true);// the user can now choose levels of difficulty
-                initializeGame();// start a frsh board for the new mode
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (bg != null) g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+                else {
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
             }
+        };
+
+        JButton selectO = new JButton();
+        styleButton(selectO);
+        selectO.addActionListener(e -> {
+            resetBoard();
+            isXTurn = false;
+            statusLabel.setText("Player O's Turn");
+            cardLayout.show(panel1, "GAME");
         });
- // New Game button
-        newGameButton1.addActionListener(new ActionListener() {
+
+        JButton selectX = new JButton();
+        styleButton(selectX);
+        selectX.addActionListener(e -> {
+            resetBoard();
+            isXTurn = true;
+            statusLabel.setText("Player X's Turn");
+            cardLayout.show(panel1, "GAME");
+        });
+
+        tokenSelectPanel.add(selectO);
+        tokenSelectPanel.add(selectX);
+        tokenSelectPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                initializeGame(); //clear the board but scores are kept
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                int w = tokenSelectPanel.getWidth();
+                int h = tokenSelectPanel.getHeight();
+                selectO.setBounds((int)(w * 0.13), (int)(h * 0.65), (int)(w * 0.16), (int)(h * 0.22));
+                selectX.setBounds((int)(w * 0.70), (int)(h * 0.65), (int)(w * 0.16), (int)(h * 0.22));
             }
         });
 
-        // Reset Score button
-        resetScoreButton1.addActionListener(new ActionListener() {
+        difficultySelectPanel = new JPanel(null) {
+            private Image bg = loadImageSafe("difficulty_select.jpg");
             @Override
-            public void actionPerformed(ActionEvent e) {
-                scoreX = 0;         //set all 3 counters back to zero
-                scoreO = 0;
-                scoreTies = 0;
-                updateScoreboard(); //show zero on the screen
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (bg != null) g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+                else {
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            }
+        };
+
+        JButton easy = new JButton();
+        styleButton(easy);
+        easy.addActionListener(e -> {
+            aiDifficulty = 1;
+            resetBoard();
+            cardLayout.show(panel1, "GAME");
+        });
+
+        JButton med = new JButton();
+        styleButton(med);
+        med.addActionListener(e -> {
+            aiDifficulty = 2;
+            resetBoard();
+            cardLayout.show(panel1, "GAME");
+        });
+
+        JButton hard = new JButton();
+        styleButton(hard);
+        hard.addActionListener(e -> {
+            aiDifficulty = 3;
+            resetBoard();
+            cardLayout.show(panel1, "GAME");
+        });
+
+        difficultySelectPanel.add(easy);
+        difficultySelectPanel.add(med);
+        difficultySelectPanel.add(hard);
+        difficultySelectPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                int w = difficultySelectPanel.getWidth();
+                int h = difficultySelectPanel.getHeight();
+                easy.setBounds((int)(w * 0.35), (int)(h * 0.64), (int)(w * 0.30), (int)(h * 0.08));
+                med.setBounds((int)(w * 0.35), (int)(h * 0.74), (int)(w * 0.30), (int)(h * 0.08));
+                hard.setBounds((int)(w * 0.35), (int)(h * 0.84), (int)(w * 0.30), (int)(h * 0.08));
             }
         });
 
-        initializeGame();
+        gamePanel = new JPanel(new GridBagLayout()) {
+            private Image bg = loadImageSafe("letterbox_background.jpg");
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (bg != null) g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+
+        JPanel centerCol = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(new Color(154, 205, 50));
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        centerCol.setOpaque(false);
+        centerCol.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        JPanel topPnl = new JPanel(new GridLayout(2, 1));
+        topPnl.setOpaque(false);
+        statusLabel = new JLabel("Player X's Turn", SwingConstants.CENTER);
+        statusLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        statusLabel.setForeground(new Color(20, 20, 20));
+
+        scoreLabel = new JLabel("X Wins: 0 | O Wins: 0 | Draws: 0", SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        scoreLabel.setForeground(new Color(40, 40, 40));
+
+        topPnl.add(statusLabel);
+        topPnl.add(scoreLabel);
+        centerCol.add(topPnl, BorderLayout.NORTH);
+
+        JPanel gridPnl = new JPanel(null) {
+            private Image gridBg = loadImageSafe("Grid_layout.jpg");
+            private JPanel innerPnl;
+
+            {
+                innerPnl = new JPanel(new GridLayout(3, 3, 0, 0));
+                innerPnl.setOpaque(false);
+
+                for (int r = 0; r < 3; r++) {
+                    for (int c = 0; c < 3; c++) {
+                        boardState[r][c] = "";
+                        JButton b = new JButton();
+                        b.setFocusPainted(false);
+                        b.setContentAreaFilled(false);
+                        b.setOpaque(false);
+                        b.setBorderPainted(false);
+                        b.setHorizontalAlignment(SwingConstants.CENTER);
+                        b.setVerticalAlignment(SwingConstants.CENTER);
+
+                        final int rr = r;
+                        final int cc = c;
+                        b.addActionListener(e -> handleCell(rr, cc));
+
+                        boardButtons[r][c] = b;
+                        innerPnl.add(b);
+                    }
+                }
+                add(innerPnl);
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (gridBg != null) {
+                    int pw = getWidth();
+                    int ph = getHeight();
+                    int sz = Math.min(pw, ph);
+                    int x = (pw - sz) / 2;
+                    int y = (ph - sz) / 2;
+                    g.drawImage(gridBg, x, y, sz, sz, this);
+                }
+            }
+
+            @Override
+            public void doLayout() {
+                super.doLayout();
+                int pw = getWidth();
+                int ph = getHeight();
+                int sz = Math.min(pw, ph);
+                int x = (pw - sz) / 2;
+                int y = (ph - sz) / 2;
+
+                int pl = (int) (sz * 0.05);
+                int pr = (int) (sz * 0.05);
+                int pt = (int) (sz * 0.12);
+                int pb = (int) (sz * 0.08);
+
+                int iw = sz - (pl + pr);
+                int ih = sz - (pt + pb);
+
+                if (innerPnl != null) {
+                    innerPnl.setBounds(x + pl, y + pt, iw, ih);
+                }
+            }
+        };
+
+        gridPnl.setOpaque(false);
+        centerCol.add(gridPnl, BorderLayout.CENTER);
+
+        JPanel botPnl = new JPanel();
+        botPnl.setOpaque(false);
+        JButton newGameBtn = new JButton("New Game");
+        newGameBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        newGameBtn.addActionListener(e -> resetBoard());
+
+        JButton menuBtn = new JButton("Main Menu");
+        menuBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        menuBtn.addActionListener(e -> cardLayout.show(panel1, "MENU"));
+
+        botPnl.add(newGameBtn);
+        botPnl.add(menuBtn);
+        centerCol.add(botPnl, BorderLayout.SOUTH);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.weighty = 1.0;
+        centerCol.setPreferredSize(new Dimension(740, 0));
+        gamePanel.add(centerCol, gbc);
+
+        panel1.add(mainMenuPanel, "MENU");
+        panel1.add(tokenSelectPanel, "TOKEN_SELECT");
+        panel1.add(difficultySelectPanel, "DIFFICULTY_SELECT");
+        panel1.add(gamePanel, "GAME");
+
+        cardLayout.show(panel1, "MENU");
     }
- // ---------- PHASE 1: Setting the stage ----------
-    private void initializeGame() {
-        // Empty board
-        for (int i = 0; i < 9; i++) {
-            board[i] = "";      //empty the memory of the boxx
-            buttons[i].setText(""); //Remove the X and O on the board
-            buttons[i].setEnabled(true); //make the button clikable again
-        }
 
-        currentPlayer = "X"; //makes X to always goes first
-        gameActive = true; //for making the game to be running again
+    private void styleButton(JButton btn) {
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+    }
 
-        updateScoreboard();  //rfesh the score Text
-        statusLabel.setText("Current Turn: Player X"); //Tell player who's turn it is
-        if (resultsLabel != null) {
-            resultsLabel.setText("Status: Active");
+    private void handleCell(int r, int c) {
+        if (!gameActive || !boardState[r][c].equals("")) return;
+        executeMove(r, c, isXTurn ? "X" : "O");
+        if (!gameActive) return;
+
+        if (vsAiMode && gameActive && !isXTurn) {
+            Timer t = new Timer(350, e -> {
+                if (!gameActive) return;
+                int[] m = null;
+                if (aiDifficulty == 1) {
+                    m = getRandomMove();
+                } else if (aiDifficulty == 2) {
+                    m = getMediumMove();
+                } else {
+                    m = getMinimaxMove();
+                }
+                if (m != null) executeMove(m[0], m[1], "O");
+            });
+            t.setRepeats(false);
+            t.start();
         }
     }
 
+    private void executeMove(int r, int c, String p) {
+        boardState[r][c] = p;
+        JButton btn = boardButtons[r][c];
+        int w = btn.getWidth();
+        int h = btn.getHeight();
+
+        if (p.equals("X")) {
+            if (rawXImage != null) btn.setIcon(scaleImg(rawXImage, w, h));
+            else btn.setText("X");
+            statusLabel.setText("Player O's Turn");
+        } else {
+            if (rawOImage != null) btn.setIcon(scaleImg(rawOImage, w, h));
+            else btn.setText("O");
+            statusLabel.setText("Player X's Turn");
+        }
+
+        checkState();
+        isXTurn = !isXTurn;
+    }
+
+    private int[] getRandomMove() {
+        java.util.List<int[]> lst = new java.util.ArrayList<>();
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (boardState[r][c].equals("")) lst.add(new int[]{r, c});
+            }
+        }
+        if (lst.isEmpty()) return null;
+        return lst.get(new java.util.Random().nextInt(lst.size()));
+    }
+
+    private int[] getMediumMove() {
+        int[] m = findSmart();
+        if (m != null) return m;
+        return getRandomMove();
+    }
+
+    private int[] getMinimaxMove() {
+        int best = Integer.MIN_VALUE;
+        int[] move = null;
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (boardState[r][c].equals("")) {
+                    boardState[r][c] = "O";
+                    int score = minimaxAlgo(boardState, 0, false);
+                    boardState[r][c] = "";
+                    if (score > best) {
+                        best = score;
+                        move = new int[]{r, c};
+                    }
+                }
+            }
+        }
+        return move;
+    }
+
+    private int minimaxAlgo(String[][] b, int depth, boolean isMax) {
+        if (checkWinStatic(b, "O")) return 10 - depth;
+        if (checkWinStatic(b, "X")) return depth - 10;
+        if (isFullStatic(b)) return 0;
+
+        if (isMax) {
+            int max = Integer.MIN_VALUE;
+            for (int r = 0; r < 3; r++) {
+                for (int c = 0; c < 3; c++) {
+                    if (b[r][c].equals("")) {
+                        b[r][c] = "O";
+                        max = Math.max(max, minimaxAlgo(b, depth + 1, false));
+                        b[r][c] = "";
+                    }
+                }
+            }
+            return max;
+        } else {
+            int min = Integer.MAX_VALUE;
+            for (int r = 0; r < 3; r++) {
+                for (int c = 0; c < 3; c++) {
+                    if (b[r][c].equals("")) {
+                        b[r][c] = "X";
+                        min = Math.min(min, minimaxAlgo(b, depth + 1, true));
+                        b[r][c] = "";
+                    }
+                }
+            }
+            return min;
+        }
+    }
+
+    private int[] findSmart() {
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (boardState[r][c].equals("")) {
+                    boardState[r][c] = "O";
+                    if (checkWin("O")) { boardState[r][c] = ""; return new int[]{r, c}; }
+                    boardState[r][c] = "";
+                }
+            }
+        }
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (boardState[r][c].equals("")) {
+                    boardState[r][c] = "X";
+                    if (checkWin("X")) { boardState[r][c] = ""; return new int[]{r, c}; }
+                    boardState[r][c] = "";
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean checkWin(String p) {
+        return checkWinStatic(boardState, p);
+    }
+
+    private boolean checkWinStatic(String[][] b, String p) {
+        for (int i = 0; i < 3; i++) {
+            if (b[i][0].equals(p) && b[i][1].equals(p) && b[i][2].equals(p)) return true;
+            if (b[0][i].equals(p) && b[1][i].equals(p) && b[2][i].equals(p)) return true;
+        }
+        if (b[0][0].equals(p) && b[1][1].equals(p) && b[2][2].equals(p)) return true;
+        if (b[0][2].equals(p) && b[1][1].equals(p) && b[2][0].equals(p)) return true;
+        return false;
+    }
+
+    private boolean isFullStatic(String[][] b) {
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (b[r][c].equals("")) return false;
+            }
+        }
+        return true;
+    }
+
+    private void checkState() {
+        for (int i = 0; i < 3; i++) {
+            if (!boardState[i][0].equals("") && boardState[i][0].equals(boardState[i][1]) && boardState[i][1].equals(boardState[i][2])) {
+                endGame(boardState[i][0]);
+                return;
+            }
+            if (!boardState[0][i].equals("") && boardState[0][i].equals(boardState[1][i]) && boardState[1][i].equals(boardState[2][i])) {
+                endGame(boardState[0][i]);
+                return;
+            }
+        }
+
+        if (!boardState[0][0].equals("") && boardState[0][0].equals(boardState[1][1]) && boardState[1][1].equals(boardState[2][2])) {
+            endGame(boardState[0][0]);
+            return;
+        }
+        if (!boardState[0][2].equals("") && boardState[0][2].equals(boardState[1][1]) && boardState[1][1].equals(boardState[2][0])) {
+            endGame(boardState[0][2]);
+            return;
+        }
+
+        if (isFullStatic(boardState)) {
+            draws++;
+            statusLabel.setText("It's a Draw!");
+            scoreLabel.setText("X Wins: " + xWins + " | O Wins: " + oWins + " | Draws: " + draws);
+            gameActive = false;
+        }
+    }
+
+    private void endGame(String winner) {
+        if (winner.equals("X")) {
+            xWins++;
+            statusLabel.setText("Player X Wins!");
+        } else {
+            oWins++;
+            statusLabel.setText("Player O Wins!");
+        }
+        scoreLabel.setText("X Wins: " + xWins + " | O Wins: " + oWins + " | Draws: " + draws);
+        gameActive = false;
+    }
+
+    private void resetBoard() {
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                boardState[r][c] = "";
+                boardButtons[r][c].setIcon(null);
+                boardButtons[r][c].setText("");
+            }
+        }
+        isXTurn = true;
+        gameActive = true;
+        statusLabel.setText("Player X's Turn");
+    }
+
+    private Image removeBackground(Image img) {
+        ImageIcon icn = new ImageIcon(img);
+        int w = icn.getIconWidth();
+        int h = icn.getIconHeight();
+        if (w <= 0 || h <= 0) { w = 150; h = 150; }
+        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = bi.createGraphics();
+        g2.drawImage(img, 0, 0, w, h, null);
+        g2.dispose();
+        
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                int rgb = bi.getRGB(x, y);
+                Color clr = new Color(rgb);
+                int r = clr.getRed();
+                int g = clr.getGreen();
+                int b = clr.getBlue();
+
+                if ((r > 210 && g > 210 && b > 210) || (Math.abs(r - g) < 15 && Math.abs(g - b) < 15 && r > 160)) {
+                    bi.setRGB(x, y, 0x00000000);
+                }
+            }}
+        }
+        return bi;
+    }
+
+    private ImageIcon scaleImg(Image img, int bw, int bh) {
+        if (img == null) return null;
+        int sz = Math.min(bw, bh) - 4;
+        if (sz < 30) sz = 90;
+        return new ImageIcon(img.getScaledInstance(sz, sz, Image.SCALE_SMOOTH));
+    }
+
+    private static void playSplash() {
+        try {
+            Image fImg = loadImageSafe("splash_1.jpg");
+            if (fImg != null) {
+                JWindow win = new JWindow();
+                JPanel pnl = new JPanel(new BorderLayout());
+                ImageIcon icn = new ImageIcon(fImg);
+                JLabel lbl = new JLabel(icn);
+                pnl.add(lbl, BorderLayout.CENTER);
+                win.add(pnl);
+                win.pack();
+                win.setLocationRelativeTo(null);
+                win.setVisible(true);
+
+                String[] frames = {"splash_1.jpg", "splash_2.jpg", "splash_3.jpg", "splash_4.jpg"};
+                for (String name : frames) {
+                    Image im = loadImageSafe(name);
+                    if (im != null) {
+                        icn.setImage(im);
+                        lbl.repaint();
+                    }
+                    Thread.sleep(400);
+                }
+                Thread.sleep(600);
+                win.dispose();
+            }
+        } catch (Exception e) {}
+    }
+
+    public static void main(String[] args) {
+        playSplash();
+        SwingUtilities.invokeLater(() -> {
+            JFrame f = new JFrame("Tic-Tac-Toe Game - Group 25");
+            TicTacToe app = new TicTacToe();
+            f.setContentPane(app.panel1);
+            f.setSize(900, 900);
+            f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            f.setLocationRelativeTo(null);
+            f.setVisible(true);
+        });
+    }
