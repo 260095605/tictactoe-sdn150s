@@ -3,7 +3,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+//This is our new and improved main TicTacToe class where we built our complete game application.
 public class TicTacToe {
+// here We declare our main container panel and different screens (CardLayout) to switch between menus and gameplay easily.
+    public JPanel panel1;
     public JPanel panel1;
     private CardLayout cardLayout;
     private JPanel mainMenuPanel;
@@ -11,22 +14,28 @@ public class TicTacToe {
     private JPanel difficultySelectPanel;
     private JPanel gamePanel;
 
+// We use a 3x3 array of buttons for the grid and a 2D String array to track board states (X, O, or empty).
     private JButton[][] boardButtons = new JButton[3][3];
     private String[][] boardState = new String[3][3];
     private JLabel statusLabel;
     private JLabel scoreLabel;
 
+// Game state variables to track scores, active turns, mode types, and AI difficulty levels.
+    private int xWins = 0;
     private int xWins = 0;
     private int oWins = 0;
     private int draws = 0;
     private boolean isXTurn = true;
     private boolean gameActive = true;
     private boolean vsAiMode = false;
-    private int aiDifficulty = 2;
+    private int aiDifficulty = 2; // Default to Medium
 
+// Images for X and O tokens
     private Image rawXImage;
     private Image rawOImage;
 
+//This helper method safely searches for image files across multiple folders or resource paths so the game never crashes if an image path differs.
+    private static Image loadImageSafe(String fileName) {
     private static Image loadImageSafe(String fileName) {
         String[] paths = {
             fileName,
@@ -52,6 +61,7 @@ public class TicTacToe {
         return null;
     }
 
+// Constructor: Here we initialize our UI screens, buttons, event listeners, and layout structure.
     public TicTacToe() {
         try {
             Image xImg = loadImageSafe("x_icon.jpg");
@@ -60,9 +70,11 @@ public class TicTacToe {
             if (oImg != null) rawOImage = removeBackground(oImg);
         } catch (Exception e) {}
 
+// We use CardLayout so we can flip between different screens smoothly like a deck of cards.
         cardLayout = new CardLayout();
         panel1 = new JPanel(cardLayout);
 
+// 1. MAIN MENU PANEL: The first screen loaded when the application starts.
         mainMenuPanel = new JPanel(null) {
             private Image bg = loadImageSafe("main_menu.jpg");
             @Override
@@ -76,6 +88,7 @@ public class TicTacToe {
             }
         };
 
+// Button to select Two-Player mode
         JButton twoPlayerBtn = new JButton();
         styleButton(twoPlayerBtn);
         twoPlayerBtn.addActionListener(e -> {
@@ -83,6 +96,7 @@ public class TicTacToe {
             cardLayout.show(panel1, "TOKEN_SELECT");
         });
 
+// Button to select Player vs Computer mode
         JButton aiBtn = new JButton();
         styleButton(aiBtn);
         aiBtn.addActionListener(e -> {
@@ -102,6 +116,7 @@ public class TicTacToe {
             }
         });
 
+// 2. TOKEN SELECT PANEL: Where players choose whether they want to be X or O.
         tokenSelectPanel = new JPanel(null) {
             private Image bg = loadImageSafe("token_select.jpg");
             @Override
@@ -145,6 +160,7 @@ public class TicTacToe {
             }
         });
 
+// 3. DIFFICULTY SELECT PANEL: Where users pick Easy, Medium, or Hard before playing AI.
         difficultySelectPanel = new JPanel(null) {
             private Image bg = loadImageSafe("difficulty_select.jpg");
             @Override
@@ -196,6 +212,7 @@ public class TicTacToe {
             }
         });
 
+// 4. GAME PANEL: The actual play area where the 3x3 board and scoreboards live.
         gamePanel = new JPanel(new GridBagLayout()) {
             private Image bg = loadImageSafe("letterbox_background.jpg");
             @Override
@@ -230,6 +247,7 @@ public class TicTacToe {
         topPnl.add(scoreLabel);
         centerCol.add(topPnl, BorderLayout.NORTH);
 
+// Grid Panel: Setting up our 3x3 game board buttons inside a grid layout.
         JPanel gridPnl = new JPanel(null) {
             private Image gridBg = loadImageSafe("Grid_layout.jpg");
             private JPanel innerPnl;
@@ -251,6 +269,7 @@ public class TicTacToe {
 
                         final int rr = r;
                         final int cc = c;
+// Each button links to our click handler using its row and column coordinates
                         b.addActionListener(e -> handleCell(rr, cc));
 
                         boardButtons[r][c] = b;
@@ -321,6 +340,7 @@ public class TicTacToe {
         centerCol.setPreferredSize(new Dimension(740, 0));
         gamePanel.add(centerCol, gbc);
 
+// We added all our screens into the main card layout panel.
         panel1.add(mainMenuPanel, "MENU");
         panel1.add(tokenSelectPanel, "TOKEN_SELECT");
         panel1.add(difficultySelectPanel, "DIFFICULTY_SELECT");
@@ -329,6 +349,7 @@ public class TicTacToe {
         cardLayout.show(panel1, "MENU");
     }
 
+// Helper method to make buttons transparent and clean-looking
     private void styleButton(JButton btn) {
         btn.setOpaque(false);
         btn.setContentAreaFilled(false);
@@ -336,11 +357,13 @@ public class TicTacToe {
         btn.setFocusPainted(false);
     }
 
+//This method handles every player move and triggers AI response if AI mode is active
     private void handleCell(int r, int c) {
         if (!gameActive || !boardState[r][c].equals("")) return;
         executeMove(r, c, isXTurn ? "X" : "O");
         if (!gameActive) return;
 
+// If we are playing against the computer and it's O's turn, we use a Swing Timer for a realistic delay.
         if (vsAiMode && gameActive && !isXTurn) {
             Timer t = new Timer(350, e -> {
                 if (!gameActive) return;
@@ -359,6 +382,7 @@ public class TicTacToe {
         }
     }
 
+// This method places the move on the board, updates icons/text, and switches turns.
     private void executeMove(int r, int c, String p) {
         boardState[r][c] = p;
         JButton btn = boardButtons[r][c];
@@ -379,6 +403,7 @@ public class TicTacToe {
         isXTurn = !isXTurn;
     }
 
+// AI Difficulty Level 1 (Easy): Picks a random empty cell.
     private int[] getRandomMove() {
         java.util.List<int[]> lst = new java.util.ArrayList<>();
         for (int r = 0; r < 3; r++) {
@@ -390,12 +415,14 @@ public class TicTacToe {
         return lst.get(new java.util.Random().nextInt(lst.size()));
     }
 
+// AI Difficulty Level 2 (Medium): Tries to win or block player, otherwise plays randomly.
     private int[] getMediumMove() {
         int[] m = findSmart();
         if (m != null) return m;
         return getRandomMove();
     }
 
+// AI Difficulty Level 3 (Hard): Uses the Minimax algorithm to calculate unbeatable moves.
     private int[] getMinimaxMove() {
         int best = Integer.MIN_VALUE;
         int[] move = null;
@@ -447,6 +474,7 @@ public class TicTacToe {
         }
     }
 
+// Helper for Medium AI to check immediate winning or blocking opportunities
     private int[] findSmart() {
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
@@ -473,6 +501,7 @@ public class TicTacToe {
         return checkWinStatic(boardState, p);
     }
 
+// Checks rows, columns, and diagonals to see if a player has won
     private boolean checkWinStatic(String[][] b, String p) {
         for (int i = 0; i < 3; i++) {
             if (b[i][0].equals(p) && b[i][1].equals(p) && b[i][2].equals(p)) return true;
@@ -483,6 +512,7 @@ public class TicTacToe {
         return false;
     }
 
+// Checks if all board cells are full (resulting in a tie)
     private boolean isFullStatic(String[][] b) {
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
@@ -492,6 +522,7 @@ public class TicTacToe {
         return true;
     }
 
+// Evaluates game status after each turn to declare a winner or draw
     private void checkState() {
         for (int i = 0; i < 3; i++) {
             if (!boardState[i][0].equals("") && boardState[i][0].equals(boardState[i][1]) && boardState[i][1].equals(boardState[i][2])) {
@@ -521,6 +552,7 @@ public class TicTacToe {
         }
     }
 
+// Updates scores and status when a game ends
     private void endGame(String winner) {
         if (winner.equals("X")) {
             xWins++;
@@ -533,6 +565,7 @@ public class TicTacToe {
         gameActive = false;
     }
 
+// Clears the board for a new round while keeping scores intact
     private void resetBoard() {
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
@@ -546,6 +579,7 @@ public class TicTacToe {
         statusLabel.setText("Player X's Turn");
     }
 
+// Image processing: removes white/light background from token icons for a transparent look
     private Image removeBackground(Image img) {
         ImageIcon icn = new ImageIcon(img);
         int w = icn.getIconWidth();
@@ -572,6 +606,7 @@ public class TicTacToe {
         return bi;
     }
 
+// Scales token icons smoothly to fit nicely inside grid buttons
     private ImageIcon scaleImg(Image img, int bw, int bh) {
         if (img == null) return null;
         int sz = Math.min(bw, bh) - 4;
@@ -579,6 +614,7 @@ public class TicTacToe {
         return new ImageIcon(img.getScaledInstance(sz, sz, Image.SCALE_SMOOTH));
     }
 
+// Splash screen method to play an animated intro sequence when launching the application
     private static void playSplash() {
         try {
             Image fImg = loadImageSafe("splash_1.jpg");
@@ -608,6 +644,7 @@ public class TicTacToe {
         } catch (Exception e) {}
     }
 
+// Main Entry Point: This is where our game starts running
     public static void main(String[] args) {
         playSplash();
         SwingUtilities.invokeLater(() -> {
