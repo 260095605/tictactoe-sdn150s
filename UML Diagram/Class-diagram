@@ -1,22 +1,42 @@
 ClassDiagram
 class TicTacToe {
 +JPanel panel1
-CardLayout cardLayout
-JPanel mainMenuPanel
-JPanel tokenSelectanel
-JPanel difficultySelectPanel
-JPanel gamePanel
-JButton[][] boardButtons
-String[][] boardState
-JLabel statusLabel
-JLabel scoreLabel
-int xWins 
-int oWins
-int draws
-boolean isXTurn
-boolean gameActive
-boolean vsAiMode
-int aiDifficulty
-Image rawXImage
-Image rawOImage
+-CardLayout cardLayout
+-JPanel mainMenuPanel
+-JPanel tokenSelectanel
+-JPanel difficultySelectPanel
+-JPanel gamePanel
+-JButton[][] boardButtons
+-String[][] boardState
+-JLabel statusLabel
+-JLabel scoreLabel
+-int xWins 
+-int oWins
+-int draws
+-boolean isXTurn
+-boolean gameActive
+-boolean vsAiMode
+-int aiDifficulty
+-Image rawXImage
+-Image rawOImage
 +TicTacToe()
+-static Image loadImageSafe(String fileName)
+-void styleButton(Jbutton btn)
+-void handleCell(int r, int c)
+-void executeMove(int r, int c, String p)
+-int[] getRandomMove()
+-int[] getMediumMove()
+-int[] getMinimaxMove()
+-int minimaxAlgo(String[][] b, String p)
+-int[] findSmart()
+-boolean checkWin(String p)
+-booleancheckWinStatic(String[][] b. String p)
+-boolean isFullStatic(String[][] b)
+-void checkState()
+-void endGame(String winner)
+-void resetBoard()
+-Image removeBackground(Image img)
+-ImageIcon scaleImg(Image img, int bw, int bh)
+-static void playSplash()
++static void main(String[] args)
+}
