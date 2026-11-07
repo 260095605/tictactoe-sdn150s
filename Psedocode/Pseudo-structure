@@ -1,17 +1,169 @@
-                          ALGORITHM:TIC-TAC-TOE
-BEGIN
-Start up and Splash Screen
-Load splash image from directory
-Display splash window for 2 seconds
-Disp
-Create an empty 3 x 3 game board
-Set Player X wins to zero
-Set Player O wins to zero
-Set Draws to zero
+TIK-TAK-TOE PROJECT (GROUP 25)
+Class TicTacToesApp
+//UI elements & screens
+Frame mainWindow 
+CardLayout screenManager
+Panel mainContaner
+Panel menuScreen, tokenScreen, diffScreen, boardScreen
 
-Display the game window
-Display the game board
-Display the game mode selection
-Display the scaoreboard 
+Button boardButton[3][3]
+string stateGrid[3][3]
+Label infoLabel, scoreTracterLabel
 
-Ask user
+//Game stats tracker
+Int WinsX = 0, WinsO = 0, ties = 0
+Boolean playerXTurn = true
+boolean isGameRunning = true 
+Boolean playingAngainstAl = false
+Int aiLevel = 2 //1: Easy, 2: Medium, Hard/ Minimax (hope this doesn't lag lol)
+
+Image xSprite, o Sprite
+
+//Helper: Safely load assets without throwing NullPointer exceptions on the lab computer
+Function loadAssetSafely(fileName)
+fileName,
+"C:\TicTacToe\" + fileName,
+"C:\Java Project Files\" + fileName,
+workingDir + fileName
+]
+For each path in possiblePaths
+If file exists at path Then
+Return Image from path
+// Fallback to resource stream just in case
+Try
+Return loadResourceFromClassPath("/" + fileName)
+Catch
+Print "Warning: Couldn't find " + fileName + ", falling back to plain text X/O."
+Return null
+End Try
+End Function
+
+//Constructor Set up everything when the program launches
+Function TicTacToeApp()
+mainWindow = New Frame("Tic-Tac-Toe-Group 25")
+mainWindow.setMaximized(true)// fullscreen looks cleaner for our presentation
+
+//Load custom icons( try catch so it doest crash if someone delete the JPEGs) Try 
+xSprite= removeWhiteBlackground(loadAssetSafely("x_icon.jpg")) 
+oSprite=removeSWhiteBackground(loadAssetSafe("oicon.jpg")) //wait typo fix:
+LoadAssetSafely
+Catch
+//Ignore asets errors, text labels will handle it
+End Try 
+screenManager=New CardLayout()
+mainContainer=New Panel(screenManager)
+setupMainMenu()
+setupTokenSelectMenu()
+setupDifficultMenu()
+setupGameGridScreen()
+// Add cards to the mein container panel
+mainContainer.add(tokenScreen, "MENU")
+mainContainer.add(menuScreen, "TOKEN_SELECT")
+mainContainer.add(difficultScreen, "DIFFICULTY_SELECT)
+mainContainer.add(boardScreen, "GAME")
+mainWindow.setContentPane(mainContainer
+screenManager.show(mainContainer, "MENU")
+End Function
+//1.Main Menu Screen Setup 
+Function setup MainMenu()
+menuScreen= New Panel(GridBagLayout)//using gridbag because manual bounds are
+trash
+Button twoPlayerBtn=New Button("2 Player Mode")
+Button aiModeBtn=New Button aiModeBtn= New Button("play vs Computer")
+styleFlatButton(twoPlayerBtn)
+styleFlatButton(aiModeBth)
+
+twoPlayerBtn.onAction->
+playingAgainstAI = false
+screenManager.show(mainContainer, "TOKEN_SELECT")
+
+aiModeBtn.onAction ->
+playingAgainstAI = true
+screenManager.show(mainContainer, "DIFFICULTY_SELECT")
+// Add buttons to menu panel with some padding
+End Function
+
+// 2. Token Selection (For 2 Player mode)
+Function setupTokenSelectMenu()
+tokenScreen = New Panel()
+Button chooseX = New Button("Player 1 is X")
+Button chooseO = New Button("Player 1 is O")
+styleFlatButton(chooseX)
+styleFlatButton(chooseO)
+
+chooseX.onAction->
+clearAndResetBoard()
+playerXTurn = true
+infoLabel.setText("PLayer X's Turn")
+screenManager.show(mainContainer,"GAME")
+
+chooseO.onAction->
+clearAndResetBoard()
+playerXTurn = false
+infoLabel.setText("player O's Turn")
+screenManager.show(mainContainer, "GAME")
+
+chooseO.onAction ->
+clearAndResetBoard()
+playerXTurn = false
+infoLabel.setText("Player O's Turn")
+screenManager.show(mainContainer, "GAME")
+End Function
+
+// 3. AI Difficulty Screen Setup
+Function setupDifficultyMenu()
+diffScreen = New Panel()
+Button easyBtn = New Button("Easy (Random)")
+Button medBtn = New Button("Medium (Smart Block)")
+Button hardBtn = New Button("Hard (Minimax Algorithm)")
+styleFlatButton(easyBtn)
+styleFlatButton(medBtn)
+styleFlatButton(hardBtn)
+
+easyBtn.onAction -> aiLevel = 1; clearAndResetBoard(); screenManager.show(mainContainer, "GAME")
+medBtn.onAction -> aiLevel = 2; clearAndResetBoard(); screenManager.show(mainContainer, "GAME")
+hardBtn.
+
+hardBtn.onAction -> aiLevel = 3; clearAndResetBoard(); screenManager.show(mainContainer, "GAME")
+End Function
+
+// 4. Main Game Screen Setup (3x3 Grid)
+Function setupGameGridScreen()
+boardScreen = New Panel(BorderLayout)
+
+// Info panel at top
+Panel topInfo = New Panel(GridLayout(2, 1))
+infoLabel = New Label("Player X's Turn", CENTER)
+scoreTrackerLabel = New Label("X Wins: 0 | O Wins: 0 | Draws: 0", CENTER)
+topInfo.add(infoLabel)
+topInfo.add(scoreTrackerLabel)
+boardScreen.add(topInfo, TOP)
+
+// 3x3 Grid of buttons
+Panel gridPanel = New Panel(GridLayout(3, 3, 5, 5)) // 5px gap looks nice
+For r = 0 to 2
+For c = 0 to 2
+boardButtons[r][c] = New Button()
+boardButtons[r][c].setFont(Arial, BOLD, 50)
+
+// capture local variables for lambda click listener
+finalRow = r
+finalCol = c
+boardButtons[r][c].onAction -> handleCellClick(finalRow, finalCol)
+gridPanel.add(boardButtons[r][c])
+
+stateGrid[r][c] = ""
+End For
+End For
+boardScreen.add(gridPanel, CENTER)
+
+// Bottom buttons (New Game & Back to Menu)
+Panel bottomControls = New Panel()
+Button resetBtn = New Button("New Game")
+Button menuBtn = New Button("Main Menu")
+resetBtn.onAction -> clearAndResetBoard()
+menuBtn.onAction -> screenManager.show(mainContainer, "MENU")
+bottomControls.add(resetBtn)
+bottomControls.add(menuBtn)
+boardScreen.add(bottomControls, BOTTOM)
+End Function
