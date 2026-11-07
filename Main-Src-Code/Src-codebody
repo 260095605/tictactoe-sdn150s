@@ -58,4 +58,87 @@ twoPlayerRadio.setSelected(true);
 difficultycomboBox1.setEnabled(false);
 
 }
+// Puting the 9 buttons ina an array(index 0 =top left,index 8=bottom right)
+buttons[0] = button1;
+buttons[1] = button2;
+buttons[2] = button3;
+buttons[3] = button4;
+buttons[4] = button5;
+buttons[5] = button6;
+buttons[6] = button7;
+buttons[7] = button8;
+buttons[8] = button9;
+
+        // Each board button calls cellClicked with its position in the buttons array
+        //When an array is clicked the actionperfomed runs
+ ActionListener cellListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < 9; i++) {
+                    if (e.getSource() == buttons[i]) { // this here tells us which button was clicked
+                        cellClicked(i);
+                    }
+                }
+            }
+        };
+ for (int i = 0; i < 9; i++) { //Attach the shares listner to each of the 9 buttons
+            buttons[i].addActionListener(cellListener);
+        }
+
+        // Two-Player Mode selected
+        twoPlayerRadio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                difficultycomboBox1.setEnabled(false); // no computer so the dificulty box will be grey
+                initializeGame();//start a frash board for the new mode
+            }
+        });
+
+        // AI Mode selected
+        VsComputer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                difficultycomboBox1.setEnabled(true);// the user can now choose levels of difficulty
+                initializeGame();// start a frsh board for the new mode
+            }
+        });
+ // New Game button
+        newGameButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                initializeGame(); //clear the board but scores are kept
+            }
+        });
+
+        // Reset Score button
+        resetScoreButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                scoreX = 0;         //set all 3 counters back to zero
+                scoreO = 0;
+                scoreTies = 0;
+                updateScoreboard(); //show zero on the screen
+            }
+        });
+
+        initializeGame();
+    }
+ // ---------- PHASE 1: Setting the stage ----------
+    private void initializeGame() {
+        // Empty board
+        for (int i = 0; i < 9; i++) {
+            board[i] = "";      //empty the memory of the boxx
+            buttons[i].setText(""); //Remove the X and O on the board
+            buttons[i].setEnabled(true); //make the button clikable again
+        }
+
+        currentPlayer = "X"; //makes X to always goes first
+        gameActive = true; //for making the game to be running again
+
+        updateScoreboard();  //rfesh the score Text
+        statusLabel.setText("Current Turn: Player X"); //Tell player who's turn it is
+        if (resultsLabel != null) {
+            resultsLabel.setText("Status: Active");
+        }
+    }
 
