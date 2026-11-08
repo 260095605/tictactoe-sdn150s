@@ -7,7 +7,6 @@ import java.io.File;
 public class TicTacToe {
 // here We declare our main container panel and different screens (CardLayout) to switch between menus and gameplay easily.
     public JPanel panel1;
-    public JPanel panel1;
     private CardLayout cardLayout;
     private JPanel mainMenuPanel;
     private JPanel tokenSelectPanel;
@@ -22,7 +21,6 @@ public class TicTacToe {
 
 // Game state variables to track scores, active turns, mode types, and AI difficulty levels.
     private int xWins = 0;
-    private int xWins = 0;
     private int oWins = 0;
     private int draws = 0;
     private boolean isXTurn = true;
@@ -35,7 +33,6 @@ public class TicTacToe {
     private Image rawOImage;
 
 //This helper method safely searches for image files across multiple folders or resource paths so the game never crashes if an image path differs.
-    private static Image loadImageSafe(String fileName) {
     private static Image loadImageSafe(String fileName) {
         String[] paths = {
             fileName,
@@ -601,7 +598,7 @@ public class TicTacToe {
                 if ((r > 210 && g > 210 && b > 210) || (Math.abs(r - g) < 15 && Math.abs(g - b) < 15 && r > 160)) {
                     bi.setRGB(x, y, 0x00000000);
                 }
-            }}
+            }
         }
         return bi;
     }
@@ -658,3 +655,4 @@ public class TicTacToe {
             f.setVisible(true);
         });
     }
+}
